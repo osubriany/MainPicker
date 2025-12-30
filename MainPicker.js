@@ -179,26 +179,33 @@ document.getElementById('saveButton').addEventListener('click', async function()
     const additionalClass2 = document.getElementById('additionalClass2').value;
     const spec2 = document.getElementById('specSelect2').value;
 
-    let resultText = `<p>Character Created: <strong>${name}</strong>`;
-    if (selectedClass && selectedSpec) {
-        resultText += ` the <strong>${selectedSpec} ${selectedClass}</strong>`;
-    }
-    resultText += `</p>`;
-    const additionalClasses = [];
-    if (additionalClass1) {
-        const specText = spec1 ? `${spec1} ` : '';
-        additionalClasses.push(`${specText}${additionalClass1}`);
-    }
-    if (additionalClass2) {
-        const specText = spec2 ? `${spec2} ` : '';
-        additionalClasses.push(`${specText}${additionalClass2}`);
-    }
-    if (additionalClasses.length > 0) {
-        resultText += `<p>Potential Classes: ${additionalClasses.join(', ')}</p>`;
+    let isDelete = false;
+    let resultText = '';
+    let additionalClasses = [];
+    let mainClass = '';
+    if (name.endsWith('-delete')) {
+        isDelete = true;
+        resultText = `<p>Character Deleted: <strong>${name.replace(/-delete$/, '')}</strong></p>`;
+    } else {
+        resultText = `<p>Character Created: <strong>${name}</strong>`;
+        if (selectedClass && selectedSpec) {
+            resultText += ` the <strong>${selectedSpec} ${selectedClass}</strong>`;
+        }
+        resultText += `</p>`;
+        if (additionalClass1) {
+            const specText = spec1 ? `${spec1} ` : '';
+            additionalClasses.push(`${specText}${additionalClass1}`);
+        }
+        if (additionalClass2) {
+            const specText = spec2 ? `${spec2} ` : '';
+            additionalClasses.push(`${specText}${additionalClass2}`);
+        }
+        if (additionalClasses.length > 0) {
+            resultText += `<p>Potential Classes: ${additionalClasses.join(', ')}</p>`;
+        }
+        mainClass = selectedClass && selectedSpec ? `${selectedSpec} ${selectedClass}` : '';
     }
     document.getElementById('result').innerHTML = resultText;
-
-    const mainClass = selectedClass && selectedSpec ? `${selectedSpec} ${selectedClass}` : '';
 
     try {
         const response = await fetch('/save', {
@@ -213,12 +220,24 @@ document.getElementById('saveButton').addEventListener('click', async function()
             })
         });
         if (response.ok) {
-            alert('Character saved successfully!');
+            if (isDelete) {
+                alert('Character deleted successfully!');
+            } else {
+                alert('Character saved successfully!');
+            }
             loadCharacters(); // Reload the grid and stats
         } else {
-            alert('Failed to save character.');
+            if (isDelete) {
+                alert('Failed to delete character.');
+            } else {
+                alert('Failed to save character.');
+            }
         }
     } catch (error) {
-        alert('Error saving character: ' + error.message);
+        if (isDelete) {
+            alert('Error deleting character: ' + error.message);
+        } else {
+            alert('Error saving character: ' + error.message);
+        }
     }
 });
