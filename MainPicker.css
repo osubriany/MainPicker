@@ -66,6 +66,28 @@ button:hover {
     grid-template-columns: 1fr;
     gap: 10px;
 }
+#characterStats {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.stat-card {
+    background-color: white;
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    text-align: center;
+}
+.stat-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+}
+.stat-card .count {
+    font-size: 28px;
+    font-weight: bold;
+    color: #4CAF50;
+}
 .character-card {
     background-color: white;
     padding: 10px;

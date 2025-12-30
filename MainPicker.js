@@ -1,9 +1,85 @@
 document.addEventListener('DOMContentLoaded', loadCharacters);
 
+const roleMap = {
+    "Arms Warrior": "melee-dps",
+    "Fury Warrior": "melee-dps",
+    "Protection Warrior": "tank",
+    "Arcane Mage": "ranged-dps",
+    "Fire Mage": "ranged-dps",
+    "Frost Mage": "ranged-dps",
+    "Assassination Rogue": "melee-dps",
+    "Outlaw Rogue": "melee-dps",
+    "Subtlety Rogue": "melee-dps",
+    "Discipline Priest": "healer",
+    "Holy Priest": "healer",
+    "Shadow Priest": "ranged-dps",
+    "Affliction Warlock": "ranged-dps",
+    "Demonology Warlock": "ranged-dps",
+    "Destruction Warlock": "ranged-dps",
+    "Beast Mastery Hunter": "ranged-dps",
+    "Marksmanship Hunter": "ranged-dps",
+    "Survival Hunter": "ranged-dps",
+    "Balance Druid": "ranged-dps",
+    "Feral Druid": "melee-dps",
+    "Guardian Druid": "tank",
+    "Restoration Druid": "healer",
+    "Elemental Shaman": "ranged-dps",
+    "Enhancement Shaman": "melee-dps",
+    "Restoration Shaman": "healer",
+    "Holy Paladin": "healer",
+    "Protection Paladin": "tank",
+    "Retribution Paladin": "melee-dps",
+    "Blood Death Knight": "tank",
+    "Frost Death Knight": "melee-dps",
+    "Unholy Death Knight": "melee-dps",
+    "Brewmaster Monk": "tank",
+    "Mistweaver Monk": "healer",
+    "Windwalker Monk": "melee-dps",
+    "Havoc Demon Hunter": "melee-dps",
+    "Vengeance Demon Hunter": "tank",
+    "Devourer Demon Hunter": "ranged-dps",
+    "Devastation Evoker": "ranged-dps",
+    "Preservation Evoker": "healer",
+    "Augmentation Evoker": "ranged-dps"
+};
+
 async function loadCharacters() {
     try {
         const response = await fetch('/characters');
         const characters = await response.json();
+        
+        // Calculate stats
+        const stats = {
+            tank: 0,
+            healer: 0,
+            "ranged-dps": 0,
+            "melee-dps": 0
+        };
+        
+        for (const [name, data] of Object.entries(characters)) {
+            if (data.mainClass && roleMap[data.mainClass]) {
+                const role = roleMap[data.mainClass];
+                stats[role]++;
+            }
+        }
+        
+        // Display stats
+        const statsDiv = document.getElementById('characterStats');
+        statsDiv.innerHTML = `
+            <div class="stat-card">
+                <h3>Tanks</h3>
+                <div class="count">${stats.tank}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Healers</h3>
+                <div class="count">${stats.healer}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Ranged DPS</h3>
+                <div class="count">${stats['ranged-dps']}</div>
+            </div>
+        `;
+        
         const grid = document.getElementById('characterGrid');
         grid.innerHTML = '';
         for (const [name, data] of Object.entries(characters)) {
@@ -134,7 +210,7 @@ document.getElementById('saveButton').addEventListener('click', async function()
         });
         if (response.ok) {
             alert('Character saved successfully!');
-            loadCharacters(); // Reload the grid
+            loadCharacters(); // Reload the grid and stats
         } else {
             alert('Failed to save character.');
         }
