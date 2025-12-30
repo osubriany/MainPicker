@@ -1,4 +1,27 @@
-const classSpecs = {
+document.addEventListener('DOMContentLoaded', loadCharacters);
+
+async function loadCharacters() {
+    try {
+        const response = await fetch('/characters');
+        const characters = await response.json();
+        const grid = document.getElementById('characterGrid');
+        grid.innerHTML = '';
+        for (const [name, data] of Object.entries(characters)) {
+            const card = document.createElement('div');
+            card.className = 'character-card';
+            card.innerHTML = `<h3>${name}</h3>`;
+            if (data.mainClass) {
+                card.innerHTML += `<p>Main: ${data.mainClass}</p>`;
+            }
+            if (data.additionalClasses && data.additionalClasses.length > 0) {
+                card.innerHTML += `<p>Additional: ${data.additionalClasses.join(', ')}</p>`;
+            }
+            grid.appendChild(card);
+        }
+    } catch (error) {
+        console.error('Failed to load characters:', error);
+    }
+}
     "Warrior": ["Arms", "Fury", "Protection"],
     "Mage": ["Arcane", "Fire", "Frost"],
     "Rogue": ["Assassination", "Outlaw", "Subtlety"],
@@ -110,6 +133,7 @@ document.getElementById('saveButton').addEventListener('click', async function()
         });
         if (response.ok) {
             alert('Character saved successfully!');
+            loadCharacters(); // Reload the grid
         } else {
             alert('Failed to save character.');
         }

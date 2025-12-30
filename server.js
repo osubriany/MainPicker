@@ -8,6 +8,20 @@ const PORT = 3000;
 app.use(express.json());
 app.use(express.static('.'));
 
+app.get('/characters', (req, res) => {
+  const filePath = path.join(__dirname, 'characters.json');
+  if (fs.existsSync(filePath)) {
+    try {
+      const data = fs.readFileSync(filePath, 'utf8');
+      res.json(JSON.parse(data));
+    } catch (e) {
+      res.json({});
+    }
+  } else {
+    res.json({});
+  }
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });

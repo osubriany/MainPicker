@@ -2,17 +2,32 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
     margin: 0;
+}
+.sidebar {
+    width: 300px;
+    background-color: #ddd;
+    padding: 20px;
+    overflow-y: auto;
+}
+.sidebar h2 {
+    margin-top: 0;
+}
+.main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
 }
 .container {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    width: 500px;
+    width: 100%;
+    max-width: 500px;
 }
 h1 {
     text-align: center;
@@ -45,4 +60,22 @@ button:hover {
 }
 #specSelect, label[for="specSelect"], #specSelect1, label[for="specSelect1"], #specSelect2, label[for="specSelect2"] {
     display: none;
+}
+#characterGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+.character-card {
+    background-color: white;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+.character-card h3 {
+    margin: 0 0 5px 0;
+}
+.character-card p {
+    margin: 0;
+    font-size: 14px;
 }
