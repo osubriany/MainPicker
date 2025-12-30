@@ -22,6 +22,7 @@ async function loadCharacters() {
         console.error('Failed to load characters:', error);
     }
 }
+const classSpecs = {
     "Warrior": ["Arms", "Fury", "Protection"],
     "Mage": ["Arcane", "Fire", "Frost"],
     "Rogue": ["Assassination", "Outlaw", "Subtlety"],
