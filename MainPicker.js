@@ -179,32 +179,26 @@ document.getElementById('saveButton').addEventListener('click', async function()
     const additionalClass2 = document.getElementById('additionalClass2').value;
     const spec2 = document.getElementById('specSelect2').value;
 
-    let isDelete = false;
     let resultText = '';
     let additionalClasses = [];
     let mainClass = '';
-    if (name.endsWith('-delete')) {
-        isDelete = true;
-        resultText = `<p>Character Deleted: <strong>${name.replace(/-delete$/, '')}</strong></p>`;
-    } else {
-        resultText = `<p>Character Created: <strong>${name}</strong>`;
-        if (selectedClass && selectedSpec) {
-            resultText += ` the <strong>${selectedSpec} ${selectedClass}</strong>`;
-        }
-        resultText += `</p>`;
-        if (additionalClass1) {
-            const specText = spec1 ? `${spec1} ` : '';
-            additionalClasses.push(`${specText}${additionalClass1}`);
-        }
-        if (additionalClass2) {
-            const specText = spec2 ? `${spec2} ` : '';
-            additionalClasses.push(`${specText}${additionalClass2}`);
-        }
-        if (additionalClasses.length > 0) {
-            resultText += `<p>Potential Classes: ${additionalClasses.join(', ')}</p>`;
-        }
-        mainClass = selectedClass && selectedSpec ? `${selectedSpec} ${selectedClass}` : '';
+    resultText = `<p>Character Created: <strong>${name}</strong>`;
+    if (selectedClass && selectedSpec) {
+        resultText += ` the <strong>${selectedSpec} ${selectedClass}</strong>`;
     }
+    resultText += `</p>`;
+    if (additionalClass1) {
+        const specText = spec1 ? `${spec1} ` : '';
+        additionalClasses.push(`${specText}${additionalClass1}`);
+    }
+    if (additionalClass2) {
+        const specText = spec2 ? `${spec2} ` : '';
+        additionalClasses.push(`${specText}${additionalClass2}`);
+    }
+    if (additionalClasses.length > 0) {
+        resultText += `<p>Potential Classes: ${additionalClasses.join(', ')}</p>`;
+    }
+    mainClass = selectedClass && selectedSpec ? `${selectedSpec} ${selectedClass}` : '';
     document.getElementById('result').innerHTML = resultText;
 
     try {
@@ -220,24 +214,42 @@ document.getElementById('saveButton').addEventListener('click', async function()
             })
         });
         if (response.ok) {
-            if (isDelete) {
-                alert('Character deleted successfully!');
-            } else {
-                alert('Character saved successfully!');
-            }
+            alert('Character saved successfully!');
             loadCharacters(); // Reload the grid and stats
         } else {
-            if (isDelete) {
-                alert('Failed to delete character.');
-            } else {
-                alert('Failed to save character.');
-            }
+            alert('Failed to save character.');
         }
     } catch (error) {
-        if (isDelete) {
-            alert('Error deleting character: ' + error.message);
+        alert('Error saving character: ' + error.message);
+    }
+});
+
+// Delete Character button logic
+document.getElementById('deleteButton').addEventListener('click', async function() {
+    const name = document.getElementById('characterName').value;
+    if (!name) {
+        alert('Please enter the character name to delete.');
+        return;
+    }
+    try {
+        const response = await fetch('/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name + '-delete',
+                mainClass: '',
+                additionalClasses: []
+            })
+        });
+        if (response.ok) {
+            alert('Character deleted successfully!');
+            loadCharacters();
         } else {
-            alert('Error saving character: ' + error.message);
+            alert('Failed to delete character.');
         }
+    } catch (error) {
+        alert('Error deleting character: ' + error.message);
     }
 });
