@@ -40,11 +40,19 @@ app.post('/save', (req, res) => {
     }
   }
 
-  // Update or add character
-  characters[name] = {
-    mainClass: mainClass || null,
-    additionalClasses: additionalClasses || []
-  };
+  // Check for delete command
+  if (name.endsWith('-delete')) {
+    const realName = name.replace(/-delete$/, '');
+    if (characters[realName]) {
+      delete characters[realName];
+    }
+  } else {
+    // Update or add character
+    characters[name] = {
+      mainClass: mainClass || null,
+      additionalClasses: additionalClasses || []
+    };
+  }
 
   // Write back to file
   fs.writeFileSync(filePath, JSON.stringify(characters, null, 2));
