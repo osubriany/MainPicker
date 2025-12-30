@@ -67,26 +67,36 @@ button:hover {
     gap: 10px;
 }
 #characterStats {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
     gap: 10px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 .stat-card {
     background-color: white;
-    padding: 15px;
+    padding: 15px 10px 15px 10px;
     border-radius: 4px;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
     text-align: center;
+    min-width: 90px;
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 .stat-card h3 {
     margin: 0 0 10px 0;
     font-size: 14px;
+    line-height: 1.2;
 }
 .stat-card .count {
     font-size: 28px;
     font-weight: bold;
     color: #4CAF50;
+    line-height: 1;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 .character-card {
     background-color: white;

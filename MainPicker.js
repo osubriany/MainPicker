@@ -78,6 +78,10 @@ async function loadCharacters() {
                 <h3>Ranged DPS</h3>
                 <div class="count">${stats['ranged-dps']}</div>
             </div>
+            <div class="stat-card">
+                <h3>Melee DPS</h3>
+                <div class="count">${stats['melee-dps']}</div>
+            </div>
         `;
         
         const grid = document.getElementById('characterGrid');
