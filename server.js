@@ -1,12 +1,3 @@
-// Temporary debug endpoint to list all character names
-app.get('/debug-characters', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT name FROM characters');
-    res.json(result.rows.map(row => row.name));
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
 const express = require('express');
 const { Pool } = require('pg');
 require('dotenv').config();
