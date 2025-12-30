@@ -1,63 +1,63 @@
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
+const { Pool } = require('pg');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const pool = new Pool();
 
 app.use(express.json());
 app.use(express.static('.'));
 
-app.get('/characters', (req, res) => {
-  const filePath = path.join(__dirname, 'characters.json');
-  if (fs.existsSync(filePath)) {
-    try {
-      const data = fs.readFileSync(filePath, 'utf8');
-      res.json(JSON.parse(data));
-    } catch (e) {
-      res.json({});
-    }
-  } else {
-    res.json({});
-  }
-});
+pool.query(`CREATE TABLE IF NOT EXISTS characters (
+  name TEXT PRIMARY KEY,
+  main_class TEXT,
+  additional_classes TEXT[]
+);`);
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(require('path').join(__dirname, 'index.html'));
 });
 
-app.post('/save', (req, res) => {
+app.get('/characters', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM characters');
+    const characters = {};
+    result.rows.forEach(row => {
+      characters[row.name] = {
+        mainClass: row.main_class,
+        additionalClasses: row.additional_classes || []
+      };
+    });
+    res.json(characters);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/save', async (req, res) => {
   const { name, mainClass, additionalClasses } = req.body;
-  const filePath = path.join(__dirname, 'characters.json');
-
-  // Read existing file
-  let characters = {};
-  if (fs.existsSync(filePath)) {
-    try {
-      characters = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    } catch (e) {
-      characters = {};
-    }
-  }
-
-  // Check for delete command
+  let realName = name;
+  let isDelete = false;
   if (name.endsWith('-delete')) {
-    const realName = name.replace(/-delete$/, '');
-    if (characters[realName]) {
-      delete characters[realName];
-    }
-  } else {
-    // Update or add character
-    characters[name] = {
-      mainClass: mainClass || null,
-      additionalClasses: additionalClasses || []
-    };
+    realName = name.replace(/-delete$/, '');
+    isDelete = true;
   }
-
-  // Write back to file
-  fs.writeFileSync(filePath, JSON.stringify(characters, null, 2));
-
-  res.json({ success: true });
+  try {
+    if (isDelete) {
+      await pool.query('DELETE FROM characters WHERE name = $1', [realName]);
+    } else {
+      await pool.query(
+        `INSERT INTO characters (name, main_class, additional_classes)
+         VALUES ($1, $2, $3)
+         ON CONFLICT (name) DO UPDATE SET main_class = $2, additional_classes = $3`,
+        [realName, mainClass, additionalClasses]
+      );
+    }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.listen(PORT, () => {
