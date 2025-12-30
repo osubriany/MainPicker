@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MainPicker - Warcraft Character Creator</title>
+    <link rel="stylesheet" href="MainPicker.css?v=1">
+</head>
+<body>
+    <div class="container">
+        <h1>Warcraft Character Picker</h1>
+        <form id="characterForm">
+            <label for="characterName">Character Name:</label>
+            <input type="text" id="characterName" placeholder="Enter your character name" required>
+
+            <label for="classSelect">Select Class:</label>
+            <select id="classSelect" required>
+                <option value="">Choose a class</option>
+                <option value="Warrior">Warrior</option>
+                <option value="Mage">Mage</option>
+                <option value="Rogue">Rogue</option>
+                <option value="Priest">Priest</option>
+                <option value="Warlock">Warlock</option>
+                <option value="Hunter">Hunter</option>
+                <option value="Druid">Druid</option>
+                <option value="Shaman">Shaman</option>
+                <option value="Paladin">Paladin</option>
+                <option value="Death Knight">Death Knight</option>
+                <option value="Monk">Monk</option>
+                <option value="Demon Hunter">Demon Hunter</option>
+                <option value="Evoker">Evoker</option>
+            </select>
+
+            <label for="specSelect">Select Specialization:</label>
+            <select id="specSelect" required>
+                <option value="">Choose a spec</option>
+            </select>
+
+            <label for="additionalClass1">Additional Class 1 (optional):</label>
+            <select id="additionalClass1">
+                <option value="">Choose a class</option>
+                <option value="Warrior">Warrior</option>
+                <option value="Mage">Mage</option>
+                <option value="Rogue">Rogue</option>
+                <option value="Priest">Priest</option>
+                <option value="Warlock">Warlock</option>
+                <option value="Hunter">Hunter</option>
+                <option value="Druid">Druid</option>
+                <option value="Shaman">Shaman</option>
+                <option value="Paladin">Paladin</option>
+                <option value="Death Knight">Death Knight</option>
+                <option value="Monk">Monk</option>
+                <option value="Demon Hunter">Demon Hunter</option>
+                <option value="Evoker">Evoker</option>
+            </select>
+
+            <label for="specSelect1">Select Specialization for Additional Class 1:</label>
+            <select id="specSelect1">
+                <option value="">Choose a spec</option>
+            </select>
+
+            <label for="additionalClass2">Additional Class 2 (optional):</label>
+            <select id="additionalClass2">
+                <option value="">Choose a class</option>
+                <option value="Warrior">Warrior</option>
+                <option value="Mage">Mage</option>
+                <option value="Rogue">Rogue</option>
+                <option value="Priest">Priest</option>
+                <option value="Warlock">Warlock</option>
+                <option value="Hunter">Hunter</option>
+                <option value="Druid">Druid</option>
+                <option value="Shaman">Shaman</option>
+                <option value="Paladin">Paladin</option>
+                <option value="Death Knight">Death Knight</option>
+                <option value="Monk">Monk</option>
+                <option value="Demon Hunter">Demon Hunter</option>
+                <option value="Evoker">Evoker</option>
+            </select>
+
+            <label for="specSelect2">Select Specialization for Additional Class 2:</label>
+            <select id="specSelect2">
+                <option value="">Choose a spec</option>
+            </select>
+
+            <button type="button" id="saveButton">Save Character</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script src="MainPicker.js"></script>
+</body>
+</html>
