@@ -42,10 +42,12 @@ app.post('/save', async (req, res) => {
   if (name.endsWith('-delete')) {
     realName = name.replace(/-delete$/, '');
     isDelete = true;
+    console.log(`[DELETE] Attempting to delete character: '${realName}'`);
   }
   try {
     if (isDelete) {
-      await pool.query('DELETE FROM characters WHERE name = $1', [realName]);
+      const result = await pool.query('DELETE FROM characters WHERE name = $1', [realName]);
+      console.log(`[DELETE] Rows affected: ${result.rowCount}`);
     } else {
       await pool.query(
         `INSERT INTO characters (name, main_class, additional_classes)
@@ -56,6 +58,7 @@ app.post('/save', async (req, res) => {
     }
     res.json({ success: true });
   } catch (err) {
+    console.error('[ERROR]', err);
     res.status(500).json({ error: err.message });
   }
 });

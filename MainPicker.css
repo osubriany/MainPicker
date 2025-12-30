@@ -58,6 +58,28 @@ button {
 button:hover {
     background-color: #45a049;
 }
+
+#saveButton, #deleteButton {
+    width: 100%;
+    font-size: 1.1em;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 16px;
+    display: block;
+}
+
+#saveButton {
+    background: #27ae60;
+    color: white;
+    margin-bottom: 10px;
+}
+
+#deleteButton {
+    background: #c0392b;
+    color: white;
+    margin-bottom: 0;
+}
 #specSelect, label[for="specSelect"], #specSelect1, label[for="specSelect1"], #specSelect2, label[for="specSelect2"] {
     display: none;
 }
